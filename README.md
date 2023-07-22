@@ -2,9 +2,10 @@
 
 ### To-Do list
 - [x] Create basic app scene
+- [x] Complete the base line for demo
 - [ ] Browsering folder of images instead of entering folder path
 - [ ] Load models and checkpoints for prediction
-    - [ ] `yolov8`
+    - [x] `yolov8`
     - [ ] `faster r-cnn`
 ### Introduction
 This demo is used for caries recognition using streamlit. The models that we use to predict here are `Yolov8` and `Faster R-CNN`.
