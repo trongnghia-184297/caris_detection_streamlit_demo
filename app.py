@@ -59,7 +59,7 @@ def app_scene():
 
         # Tab 1: predict a single image
         with tab1:
-            tab1_scene(model=model)
+            tab1_scene(model)
 
         # Tab 2: predict a folder of images
         with tab2:
