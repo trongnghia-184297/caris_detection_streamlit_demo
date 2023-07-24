@@ -7,10 +7,14 @@ import os
 
 def tab1_scene(model):
     # Upload file
-    uploaded_file = st.file_uploader(label="Upload single image")
+    uploaded_file = st.file_uploader(label="Upload single image", key="single_upload")
+
+    col1, _, col2 = st.columns([1, 4, 1])
 
     if uploaded_file is not None:
-        if st.button("Predict"):
+        with col1:
+            a = st.button("Predict", key="image_upload")
+        if a:
             image_byte = uploaded_file.read()
             np_array = np.frombuffer(image_byte, np.uint8)
 
@@ -81,6 +85,14 @@ def tab1_scene(model):
             # Show predicted time
             st.success(f"Prediction finished in {round(running_time, 2)}s", icon="✅")
 
+            # # Download single image
+            # # Convert to bytes before save
+            # with open(predicted_img_path, "rb") as f:
+            #     predicted_img_bytes = f.read()
+            # st.download_button(
+            #     "Download", data=predicted_img_bytes, file_name="predicted_img.jpg"
+            # )
+
             # Display images with grid size n_cols x n_rows
             n_cols = 2
             n_rows = 1
@@ -93,3 +105,12 @@ def tab1_scene(model):
                     cols[image_index].image(img, caption="Original image")
                 else:
                     cols[image_index].image(predicted_img, caption="Predicted image")
+
+            # Download single image
+            # Convert to bytes before save
+            with col2:
+                with open(predicted_img_path, "rb") as f:
+                    predicted_img_bytes = f.read()
+                st.download_button(
+                    "Download", data=predicted_img_bytes, file_name="predicted_img.jpg"
+                )

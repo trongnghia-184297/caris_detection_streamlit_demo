@@ -3,10 +3,19 @@ import imghdr
 import streamlit as st
 from zipfile import ZipFile
 
+
+def create_zip_file(zip_folder, output_path):
+    with ZipFile(output_path, "w") as zip_file:
+        for root, _, files in os.walk(zip_folder):
+            for file in files:
+                file_path = os.path.join(root, file)
+                zip_file.write(file_path, os.path.relpath(file_path, zip_folder))
+
+
 def extract_zip(zip_path, destination_folder):
-    with ZipFile(zip_path, 'r') as zip:
+    with ZipFile(zip_path, "r") as zip:
         zip.extractall(destination_folder)
-    return zip.infolist()[0].filename
+
 
 def check_folder(folder_path):
     # Check folder before predicting
@@ -37,13 +46,13 @@ def check_image_folder(folder_path):
 if __name__ == "__main__":
     # specifying the zip file name
     file_name = "/home/khanhhv2/workspace/test_images.zip"
-    
+
     # opening the zip file in READ mode
-    with ZipFile(file_name, 'r') as zip:
+    with ZipFile(file_name, "r") as zip:
         # printing all the contents of the zip file
         print(zip.infolist()[0].filename)
-    
+
         # extracting all the files
-        print('Extracting all the files now...')
+        print("Extracting all the files now...")
         zip.extractall()
-        print('Done!')
+        print("Done!")

@@ -2,35 +2,35 @@ import streamlit as st
 from utils import check_folder
 import time
 import os
-from utils import extract_zip
-from zipfile import ZipFile
+from utils import extract_zip, create_zip_file
 import shutil
 
 
 def tab2_scene(model):
     # Upload folder of images
-    upload_file = st.file_uploader("Upload a zip file", type=["zip"])
+    upload_file = st.file_uploader(
+        "Upload a zip file", type=["zip"], key="folder_upload"
+    )
+    col3, _, col4 = st.columns([1, 0.5, 0.5])
 
     if upload_file is not None:
-        if st.button("Predict"):
+        with col3:
+            b = st.button("Predict", key="folder_predict")
+        if b:
             # Check folder before predicting
             save_folder = "./saved"
-
-            zip = ZipFile(upload_file, 'r')
-            extract_folder = (zip.infolist()[0].filename).split("/")[0]
+            extract_folder = (upload_file.name).split(".")[0]
             folder_path = os.path.join(save_folder, extract_folder)
+
             if os.path.exists(folder_path):
-                
-            st.text(extract_folder)
+                shutil.rmtree(folder_path)
+            os.makedirs(folder_path, exist_ok=True)
+
             # Extract the images to the save folder
-            # extracted_folder = extract_zip(upload_file, save_folder).split("/")[0]
+            extract_zip(upload_file, save_folder)
 
-            # Image folder
-            # exit()
+            # Check valid folder
             check_folder(folder_path)
-
-            # Download button
-            st.button("Download")
 
             # Predict
             start_time = time.time()
@@ -103,3 +103,20 @@ def tab2_scene(model):
                     cols[image_index].image(
                         img, caption=f"Predicted image {caption_index}"
                     )
+
+            # Download folder image
+            # Download button to save the runs_latest_folder as a ZIP file
+            output_zip_file = os.path.join(save_folder, "predicted_folder.zip")
+            create_zip_file(runs_latest_folder, output_zip_file)
+
+            # Read the ZIP file as bytes
+            with col4:
+                with open(output_zip_file, "rb") as file:
+                    zip_file_bytes = file.read()
+
+                st.download_button(
+                    "Download as zip file",
+                    data=zip_file_bytes,
+                    file_name="predicted_folder.zip",
+                    key="folder_download",
+                )
