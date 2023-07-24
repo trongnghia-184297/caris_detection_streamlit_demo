@@ -1,7 +1,12 @@
 import os
 import imghdr
 import streamlit as st
+from zipfile import ZipFile
 
+def extract_zip(zip_path, destination_folder):
+    with ZipFile(zip_path, 'r') as zip:
+        zip.extractall(destination_folder)
+    return zip.infolist()[0].filename
 
 def check_folder(folder_path):
     # Check folder before predicting
@@ -27,3 +32,18 @@ def check_image_folder(folder_path):
             st.warning("Warning: Folder should contain only images.")
             st.error(f'ERROR: File "{img_path}" is not an image!')
             st.stop()
+
+
+if __name__ == "__main__":
+    # specifying the zip file name
+    file_name = "/home/khanhhv2/workspace/test_images.zip"
+    
+    # opening the zip file in READ mode
+    with ZipFile(file_name, 'r') as zip:
+        # printing all the contents of the zip file
+        print(zip.infolist()[0].filename)
+    
+        # extracting all the files
+        print('Extracting all the files now...')
+        zip.extractall()
+        print('Done!')
