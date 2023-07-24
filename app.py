@@ -1,7 +1,7 @@
 import streamlit as st
 from ultralytics import YOLO
-from scene.tab1 import tab1_scene
-from scene.tab2 import tab2_scene
+from scenes.tab1 import tab1_scene
+from scenes.tab2 import tab2_scene
 
 
 def main():

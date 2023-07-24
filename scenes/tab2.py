@@ -2,16 +2,10 @@ import streamlit as st
 from utils import check_folder
 import time
 import os
-
-# import nicegui
+import zipfile
 
 
 def tab2_scene(model):
-    # selected_folder = nicegui.directory_picker('Select a folder')
-
-    # if selected_folder:
-    # st.write("Selected folder:", selected_folder)
-
     # Upload folder of images
     folder_path = st.text_input("Enter Folder Path")
     if st.button("Upload Folder"):
